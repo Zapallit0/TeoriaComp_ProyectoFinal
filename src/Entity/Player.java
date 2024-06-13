@@ -14,19 +14,25 @@ public class Player extends Entity{
     GamePanel gp;
     KeyHandler keyH;
 
+    public final int screenX;
+    public final int screenY;
+
     public Player(GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
         this.keyH = keyH;
+
+        screenX = gp.screenWidth/2 - (gp.tilesSize/2);
+        screenY = gp.screenHeight/2 - (gp.tilesSize/2);
 
         setDefaultValues();
         getPlayerImage();
     }
 
     public void setDefaultValues() {
-        x = 100;
-        y = 100;
+        worldX = gp.tilesSize * 23;
+        worldY = gp.tilesSize * 21;
         speed = 4;
-        direction = "up";
+        direction = "down";
     }
 
     public void getPlayerImage() {
@@ -48,7 +54,7 @@ public class Player extends Entity{
     public void udpate() {
         if(keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true || keyH.rightPressed == true) {
             spriteCounter++;
-            if(spriteCounter > 12) {
+            if(spriteCounter > 10) {
                 if(spriteNumber == 1) {
                     spriteNumber = 2;
                 } else if(spriteNumber == 2) {
@@ -60,17 +66,18 @@ public class Player extends Entity{
 
         if(keyH.upPressed == true) {
             direction = "up";
-            y -= speed;
+            worldY -= speed;
         } else if (keyH.downPressed == true) {
             direction = "down";
-            y += speed;
+            worldY += speed;
         } else if (keyH.leftPressed == true) {
             direction = "left";
-            x -= speed;
+            worldX-= speed;
         } else if (keyH.rightPressed == true) {
             direction = "right";
-            x += speed;
+            worldX += speed;
         }
+
     }
 
     public void draw(Graphics2D g2) {
@@ -109,7 +116,7 @@ public class Player extends Entity{
                 }
                 break;
         }
-        g2.drawImage(image, x, y, gp.tilesSize, gp.tilesSize, null);
+        g2.drawImage(image, screenX, screenY, gp.tilesSize, gp.tilesSize, null);
     }
 
 }
