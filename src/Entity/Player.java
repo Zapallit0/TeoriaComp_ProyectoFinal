@@ -58,44 +58,47 @@ public class Player extends Entity{
     }
 
     public void udpate() {
-        if(keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true || keyH.rightPressed == true) {
+        if (keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true || keyH.rightPressed == true) {
+            if (keyH.upPressed == true) {
+                direction = "up";
+            } else if (keyH.downPressed == true) {
+                direction = "down";
+            } else if (keyH.leftPressed == true) {
+                direction = "left";
+            } else if (keyH.rightPressed == true) {
+                direction = "right";
+            }
+
+            collisionOn = false;
+            gp.cChecker.checkTile(this);
+
+            if (collisionOn == false) {
+                switch (direction) {
+                    case "up":
+                        worldY -= speed;
+                        break;
+                    case "down":
+                        worldY += speed;
+                        break;
+                    case "left":
+                        worldX -= speed;
+                        break;
+                    case "right":
+                        worldX += speed;
+                        break;
+                }
+            }
+
             spriteCounter++;
-            if(spriteCounter > 10) {
-                if(spriteNumber == 1) {
+            if (spriteCounter > 10) {
+                if (spriteNumber == 1) {
                     spriteNumber = 2;
-                } else if(spriteNumber == 2) {
+                } else if (spriteNumber == 2) {
                     spriteNumber = 1;
                 }
                 spriteCounter = 0;
             }
         }
-
-        if(keyH.upPressed == true) {
-            direction = "up";
-            worldY -= speed;
-        } else if (keyH.downPressed == true) {
-            direction = "down";
-            worldY += speed;
-        } else if (keyH.leftPressed == true) {
-            direction = "left";
-            worldX-= speed;
-        } else if (keyH.rightPressed == true) {
-            direction = "right";
-            worldX += speed;
-        }
-
-        collisionOn = false;
-        gp.cChecker.checkTile(this);
-
-        if (collisionOn == false) {
-            switch (direction) {
-                case "up": worldY -= speed; break;
-                case "down": worldY += speed; break;
-                case "left": worldX -= speed; break;
-                case "right": worldX += speed; break;
-            }
-        }
-
     }
 
     public void draw(Graphics2D g2) {
