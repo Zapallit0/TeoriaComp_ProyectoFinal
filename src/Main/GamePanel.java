@@ -1,6 +1,7 @@
 package Main;
 
 import Entity.Player;
+import Items.SuperObject;
 import Main.Tile.TileManager;
 
 import javax.swing.*;
@@ -28,7 +29,10 @@ public class GamePanel extends JPanel implements Runnable {
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
     public CollisionChecker cChecker = new CollisionChecker(this);
+    public AssetSetter aSetter = new AssetSetter(this);
     public Player player = new Player(this, keyH);
+    public SuperObject obj[] = new SuperObject[10];
+
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
