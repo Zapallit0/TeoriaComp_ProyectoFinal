@@ -6,22 +6,23 @@ import Main.Tile.TileManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class GamePanel extends JPanel implements Runnable {
 
     final int originalTileSize = 16;
     final int scale = 3;
 
-    final public int tilesSize = originalTileSize * scale;
+    final public int tileSize = originalTileSize * scale;
     final public int maxScreenCol = 16;
     final public int maxScreenRow = 12;
-    final public int screenWidth = tilesSize * maxScreenCol;
-    final public int screenHeight = tilesSize * maxScreenRow;
-
+    final public int screenWidth = tileSize * maxScreenCol;
+    final public int screenHeight = tileSize * maxScreenRow;
+    public UI ui=new UI(this);
     final public int maxWorldCol = 50;
     final public int maxWorldRow = 50;
-    final public int worldWidth = tilesSize * maxWorldCol;
-    final public int maxWorldHeight = tilesSize * maxWorldRow;
+    final public int worldWidth = tileSize * maxWorldCol;
+    final public int maxWorldHeight = tileSize * maxWorldRow;
 
     int framesPerSecond = 60;
 
@@ -34,7 +35,7 @@ public class GamePanel extends JPanel implements Runnable {
     public SuperObject obj[] = new SuperObject[10];
 
 
-    public GamePanel() {
+    public GamePanel() throws IOException, FontFormatException {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.blue);
         this.setDoubleBuffered(true);
@@ -68,7 +69,11 @@ public class GamePanel extends JPanel implements Runnable {
             lastTime = currentTime;
 
             if(delta >= 1) {
-                update();
+                try {
+                    update();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 repaint();
                 delta--;
                 drawCount++;
@@ -81,8 +86,8 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    public void update() {
-        player.udpate();
+    public void update() throws IOException {
+        player.update();
     }
 
     public void paintComponent(Graphics g) {
@@ -97,7 +102,7 @@ public class GamePanel extends JPanel implements Runnable {
                 obj[i].draw(g2, this);
             }
         }
-
+        ui.draw(g2);
         player.draw(g2);
         g2.dispose();
     }

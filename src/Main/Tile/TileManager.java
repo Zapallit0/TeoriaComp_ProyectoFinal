@@ -101,16 +101,16 @@ public class TileManager {
 
             int tileNumber = mapTileNum[worldCol][worldRow];
 
-            int worldX = worldCol * gp.tilesSize;
-            int worldY = worldRow * gp.tilesSize;
+            int worldX = worldCol * gp.tileSize;
+            int worldY = worldRow * gp.tileSize;
             int screenX = worldX - gp.player.worldX + gp.player.screenX;
             int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
-            if(worldX + gp.tilesSize > gp.player.worldX - gp.player.screenX
-                    && worldX  - gp.tilesSize < gp.player.worldX + gp.player.screenX
-                    && worldY + gp.tilesSize > gp.player.worldY - gp.player.screenY
-                    && worldY - gp.tilesSize < gp.player.worldY + gp.player.screenY) {
-                g2.drawImage(tile[tileNumber].image, screenX, screenY, gp.tilesSize, gp.tilesSize,null);
+            if(worldX + gp.tileSize > gp.player.worldX - gp.player.screenX
+                    && worldX  - gp.tileSize < gp.player.worldX + gp.player.screenX
+                    && worldY + gp.tileSize > gp.player.worldY - gp.player.screenY
+                    && worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
+                g2.drawImage(tile[tileNumber].image, screenX, screenY, gp.tileSize, gp.tileSize,null);
             }
             worldCol++;
 

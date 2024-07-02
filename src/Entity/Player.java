@@ -13,20 +13,22 @@ public class Player extends Entity{
 
     GamePanel gp;
     KeyHandler keyH;
-
+    int speed,life=10,maxLife=10,dmg;
     public final int screenX;
     public final int screenY;
-
+    public int hasKey=0;
     public Player(GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
         this.keyH = keyH;
 
-        screenX = gp.screenWidth/2 - (gp.tilesSize/2);
-        screenY = gp.screenHeight/2 - (gp.tilesSize/2);
+        screenX = gp.screenWidth/2 - (gp.tileSize /2);
+        screenY = gp.screenHeight/2 - (gp.tileSize /2);
 
         solidArea = new Rectangle();
         solidArea.x = 8;
         solidArea.y = 16;
+        solidAreaDefaultX=solidArea.x;
+        solidAreaDefaultY=solidArea.y;
         solidArea.width = 32;
         solidArea.height = 32;
 
@@ -35,8 +37,8 @@ public class Player extends Entity{
     }
 
     public void setDefaultValues() {
-        worldX = gp.tilesSize * 23;
-        worldY = gp.tilesSize * 21;
+        worldX = gp.tileSize * 23;
+        worldY = gp.tileSize * 21;
         speed = 4;
         direction = "down";
     }
@@ -57,7 +59,7 @@ public class Player extends Entity{
         }
     }
 
-    public void udpate() {
+    public void update() throws IOException {
         if (keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true || keyH.rightPressed == true) {
             if (keyH.upPressed == true) {
                 direction = "up";
@@ -71,7 +73,8 @@ public class Player extends Entity{
 
             collisionOn = false;
             gp.cChecker.checkTile(this);
-
+            int objIndex=gp.cChecker.checkObject(this,true);
+            pickUpObject(objIndex);
             if (collisionOn == false) {
                 switch (direction) {
                     case "up":
@@ -100,7 +103,32 @@ public class Player extends Entity{
             }
         }
     }
-
+    public void pickUpObject(int i) throws IOException {
+        if(i!=999){
+            String objectName=gp.obj[i].name;
+            switch (objectName){
+                case "Key":
+                    hasKey++;
+                    gp.obj[i]=null;
+                    break;
+                case "Door":
+                    if(hasKey>0){
+                        gp.obj[i]=null;
+                        hasKey--;
+                    }
+                    break;
+                case "Chest":
+                    if(hasKey>0) {
+                        gp.obj[i] = null;
+                        hasKey--;
+                    }
+                    else{
+                        gp.ui.showMessage("No tienes llaves");
+                    }
+                    break;
+            }
+        }
+    }
     public void draw(Graphics2D g2) {
         BufferedImage image = null;
         switch (direction) {
@@ -137,7 +165,16 @@ public class Player extends Entity{
                 }
                 break;
         }
-        g2.drawImage(image, screenX, screenY, gp.tilesSize, gp.tilesSize, null);
+        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+    }
+    public void lessLife(int nlife){
+            nlife=life-nlife;
+    }
+    public void moreLife(int nlife){
+            nlife=life+nlife;
+    }
+    public int getMaxLife(){
+        return maxLife;
     }
 
 }
