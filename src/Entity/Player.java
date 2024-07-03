@@ -78,15 +78,19 @@ public class Player extends Entity{
             if (collisionOn == false) {
                 switch (direction) {
                     case "up":
+                        gp.ui.showMessage("Arriba");
                         worldY -= speed;
                         break;
                     case "down":
+                        gp.ui.showMessage("Abajo");
                         worldY += speed;
                         break;
                     case "left":
+                        gp.ui.showMessage("Izquierda");
                         worldX -= speed;
                         break;
                     case "right":
+                        gp.ui.showMessage("Derecha");
                         worldX += speed;
                         break;
                 }
